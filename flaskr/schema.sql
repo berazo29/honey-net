@@ -1,0 +1,43 @@
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS bug;
+DROP TABLE IF EXISTS history;
+DROP TABLE IF EXISTS priority;
+DROP TABLE IF EXISTS severity;
+
+CREATE TABLE user (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL
+);
+
+CREATE TABLE bug (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author_id INTEGER NOT NULL,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  priority INTEGER CHECK ( priority >= 1 AND priority <= 2 ),
+  severity INTEGER CHECK ( severity >= 1 AND severity <= 2 ),
+  FOREIGN KEY (author_id) REFERENCES user (id),
+  FOREIGN KEY (priority) REFERENCES priority(id),
+  FOREIGN KEY (severity) REFERENCES severity(id)
+);
+
+CREATE TABLE history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    bug_id INTEGER NOT NULL,
+    description TEXT NOT NULL,
+    author_id INTEGER NOT NULL,
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (bug_id) REFERENCES bug (id),
+    FOREIGN KEY (author_id) REFERENCES user (id)
+);
+
+CREATE TABLE priority (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE severity (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title VARCHAR(50) NOT NULL
+);
