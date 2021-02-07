@@ -131,8 +131,7 @@ def add_history(id):
         (id,)
     ).fetchall()
     for bug in bug_history:
-        print('id: ', bug[0], 'title: ', bug[1])
-        print('body: ', bug[2])
-        print('description: ', bug[3])
-        print('date: ', bug[4])
-    return 'hello'
+        for item in bug:
+            print(item)
+        print('-----')
+    return render_template('bug/add_report.html', bug_history=bug_history)
